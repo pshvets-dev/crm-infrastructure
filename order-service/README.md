@@ -9,16 +9,22 @@ CRM order microservice built with Fastify, Prisma, PostgreSQL, Redis, and Kafka.
 
 ## Quick start
 
-From the repository root:
+**Full stack (one command, from repository root):**
 
 ```bash
-docker compose up -d postgres redis kafka kafka-ui
+docker compose up -d --build
 ```
 
-From `order-service/`:
+Migrations and seed run automatically on container start.
+
+**Local dev with hot reload:**
 
 ```bash
-cp .env.example .env   # or use existing .env
+# from repository root
+docker compose up -d postgres redis kafka kafka-ui redis-insight
+
+# from order-service/
+cp .env.example .env
 npm install
 npm run db:setup
 npm run dev
