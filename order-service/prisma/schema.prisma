@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model OrderStatus {
+  id     Int     @id @default(autoincrement())
+  code   String  @unique
+  name   String
+  orders Order[]
+
+  @@map("order_statuses")
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  customerId String      @map("customer_id")
+  total      Decimal     @db.Decimal(12, 2)
+  statusId   Int         @map("status_id")
+  productId  Int         @map("product_id")
+  status     OrderStatus @relation(fields: [statusId], references: [id])
+  
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  createUser String      @default("system") @map("create_user")
+  updateUser String      @default("system") @map("update_user")
+  version    Int        @default(0)
+
+  @@map("orders")
+}
